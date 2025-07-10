@@ -34,7 +34,7 @@ Evol_func = function(z, p){
   return(out)
 } 
 
-#skewed normal function to generate CSFH as a function of lookback time in GYR
+#skewed normal function to generate CSFH
 snorm=function(age,mSFR,mpeak,mperiod,mskew){
   mpeak=mpeak*1e9
   mperiod=mperiod*1e9
@@ -72,16 +72,61 @@ ps2EBL = function(f, volweights, waveout){
 
 
 
-ProSpectEBL = function(CSFH_parms = c(0.088,1.581,1.015,-0.299), CSFH_vec = NULL, AGN_parms = NULL,
-                       AGN_vec = NULL, type="redshift", Zstart=1e-4, Zfinal=0.02,
-                       flts = NULL, alpha_SF_screen=3,alpha_SF_birth=1.75,
-                       Dale=Dale_NormTot, tau_screen = 0.3, tau_birth=1, 
-                       speclib=BC03lr, OmegaM = 0.3, OmegaL=0.7, H0=70, 
-                       Z=tempZH, returnall=TRUE, addradio_SF=TRUE, ff_frac_SF = 0.05, 
-                       Te_SF=10000, waveout = seq(0,15,by = 0.01),
-                       addradio_AGN = TRUE, AGNal = 4, AGNta = 1, 
-                       AGNrm = 60, AGNbe = -0.5, AGNct = 100, AGN=Fritz, AGNan = 45, 
-                       ref = '737', agevec = seq(1e-5,13.5,0.06), zvec = NULL)
+ProSpectEBL = function(CSFH_parms = c(0.088,1.581,1.015,-0.299),
+                       CSFH_vec = NULL,
+                       AGN_parms = NULL,
+                       AGN_vec = NULL,
+                       type="redshift",
+                       Zstart=1e-4,
+                       Zfinal=0.02,
+                       flts = NULL,
+                       tau_birth = 1, 
+                       tau_screen = 0.3, 
+                       tau_AGN = 1,
+                       pow_birth = -0.7,
+                       pow_screen = -0.7,
+                       pow_AGN = -0.7, 
+                       alpha_SF_birth = 1,
+                       alpha_SF_screen = 3, 
+                       alpha_SF_AGN = 0, 
+                       sparse = 5, 
+                       speclib = NULL,
+                       Dale = Dale_NormTot, 
+                       AGN = Fritz, 
+                       Dale_M2L_func = NULL,
+                       returnall = TRUE, 
+                       H0 = 67.8, 
+                       OmegaM = 0.308,
+                       OmegaL = 1 - OmegaM,
+                       ref = '737', 
+                       unimax = 1.38e+10, 
+                       agemax = NULL,
+                       LumDist_Mpc = NULL, 
+                       addradio_SF = FALSE, 
+                       addradio_AGN = FALSE, 
+                       Te_SF = 10000,
+                       ff_frac_SF = 0.1, 
+                       ff_power_SF = -0.1, 
+                       sy_power_SF = -0.8, 
+                       Te_AGN = 10000,
+                       ff_frac_AGN = 0.1, 
+                       ff_power_AGN = -0.1, 
+                       sy_power_AGN = -0.8, 
+                       AGNct = 40, 
+                       AGNrm = 60,
+                       AGNan = 30, 
+                       AGNta = 1, 
+                       AGNal = 4, 
+                       AGNbe = -0.5, 
+                       AGNp = 1, 
+                       AGNq = 1, 
+                       Eb = 0, 
+                       L0 = 2175.8,
+                       LFWHM = 470, 
+                       IGMabsorb = 0, 
+                       waveout = seq(0,15,by = 0.01), 
+                       agevec = seq(1e-5,13.5,0.06), 
+                       zvec = NULL)
 {
   
   
@@ -211,10 +256,17 @@ ProSpectEBL = function(CSFH_parms = c(0.088,1.581,1.015,-0.299), CSFH_vec = NULL
       
       temp=ProSpectSED(SFH = SFHfunc, massfunc=tempSFH, z = zvec[i], agemax = max(agevec) - agevec[i], filters=NULL, # Run ProSpect SED for our target tempSFH and tempZH
                        alpha_SF_screen=alpha_SF_screen,alpha_SF_birth=alpha_SF_birth,
+                       alpha_SF_AGN = alpha_SF_AGN, sparse = sparse,
                        Dale=Dale_NormTot, speclib=speclib, OmegaM = OmegaM, OmegaL=OmegaL, H0=H0, 
                        Z=tempZH, returnall=TRUE, addradio_SF=addradio_SF, ff_frac_SF = ff_frac_SF, 
-                       Te_SF=Te_SF, waveout = waveout, AGN = AGN,
-                       addradio_AGN = addradio_AGN, AGNlum = AGNlum[i], filtout = filt_out)$Photom
+                       Te_SF=Te_SF, ff_power_SF = ff_power_SF, sy_power_SF = sy_power_SF,
+                       waveout = waveout, AGN = AGN, Te_AGN = Te_AGN, ff_frac_AGN = ff_frac_AGN,
+                       ff_power_AGN = ff_power_AGN, sy_power_AGN = sy_power_AGN,
+                       addradio_AGN = addradio_AGN, AGNlum = AGNlum[i], filtout = filt_out, AGNan = AGNan,
+                       AGNal = AGNal, AGNta = AGNta, AGNct = AGNct, AGNbe = AGNbe, AGNrm = AGNrm, 
+                       AGNp = AGNp, AGNq = AGNq, Eb = Eb, L0 = L0, LFWHM = LFWHM, IGMabsorb = IGMabsorb,  
+                       pow_birth = pow_birth, pow_screen = pow_screen, pow_AGN = pow_AGN,
+                       Dale_M2L_func = Dale_M2L_func, unimax = unimax)$Photom
       
       
     }
@@ -257,10 +309,17 @@ ProSpectEBL = function(CSFH_parms = c(0.088,1.581,1.015,-0.299), CSFH_vec = NULL
       
       temp=ProSpectSED(SFH = SFHfunc, massfunc=tempSFH, z = zvec[i], agemax = max(agevec) - agevec[i], filters=NULL, # Run ProSpect SED for our target tempSFH and tempZH
                        alpha_SF_screen=alpha_SF_screen,alpha_SF_birth=alpha_SF_birth,
+                       alpha_SF_AGN = alpha_SF_AGN, sparse = sparse,
                        Dale=Dale_NormTot, speclib=speclib, OmegaM = OmegaM, OmegaL=OmegaL, H0=H0, 
                        Z=tempZH, returnall=TRUE, addradio_SF=addradio_SF, ff_frac_SF = ff_frac_SF, 
-                       Te_SF=Te_SF, waveout = waveout, AGN = AGN,
-                       addradio_AGN = addradio_AGN, AGNlum = AGNlum[i])
+                       Te_SF=Te_SF, ff_power_SF = ff_power_SF, sy_power_SF = sy_power_SF,
+                       waveout = waveout, AGN = AGN, Te_AGN = Te_AGN, ff_frac_AGN = ff_frac_AGN,
+                       ff_power_AGN = ff_power_AGN, sy_power_AGN = sy_power_AGN,
+                       addradio_AGN = addradio_AGN, AGNlum = AGNlum[i], filtout = NULL, AGNan = AGNan,
+                       AGNal = AGNal, AGNta = AGNta, AGNct = AGNct, AGNbe = AGNbe, AGNrm = AGNrm, 
+                       AGNp = AGNp, AGNq = AGNq, Eb = Eb, L0 = L0, LFWHM = LFWHM, IGMabsorb = IGMabsorb,  
+                       pow_birth = pow_birth, pow_screen = pow_screen, pow_AGN = pow_AGN,
+                       Dale_M2L_func = Dale_M2L_func, unimax = unimax)
       
       
       a = Lum2Flux(wave = temp$FinalLum$wave, lum = temp$FinalLum$lum, z = zvec[i], ref= ref)
