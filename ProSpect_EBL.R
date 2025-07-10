@@ -34,7 +34,7 @@ Evol_func = function(z, p){
   return(out)
 } 
 
-#skewed normal function to generate CSFH
+#skewed normal function to generate CSFH as a function of lookback time in GYR
 snorm=function(age,mSFR,mpeak,mperiod,mskew){
   mpeak=mpeak*1e9
   mperiod=mperiod*1e9
