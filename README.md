@@ -142,7 +142,7 @@ ProSpectSED, cosdistTravelTime, getfilt.
     
         fit_SFG = ProSpectEBL(CSFH_parms = c(0.069,10.94,2.074,0.394), Zfinal = 0.02, flts = NULL,
                           AGN_parms = NULL, type = 'lbt', agevec = seq(1e-2,13.5,0.06),
-                          ref = '737'
+                          ref = '737')
      #Plot output. 
 
     magplot(fit_SFG$Wavelength, fit_SFG$Flux, log = "xy", xlim = c(0.1,1e5),
