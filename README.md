@@ -180,7 +180,17 @@ ProSpectSED, cosdistTravelTime, getfilt.
          text.col = c('darkorchid1', 'blue', 'chocolate4', 'red'), cex = 1.75)
   
 
+#Generate EBL predictions though the VST/VISTA filter set. CSFH from Bellstedt et al. (2020). 
+	
+ 	fit_VST = try(ProSpectEBL(CSFH_parms = c(0.069,10.94,2.074,0.394), Zfinal = 0.02, 
+                          flts = c('u_VST', 'g_VST', 'r_VST', 'i_VST', 'z_VST', 'Y_VISTA', 'J_VISTA', 'H_VISTA', 'K_VISTA'),
+                          AGN_parms = NULL, type = 'lbt', agevec = seq(1e-2,13.5,0.06),
+                          ref = '737'))
 
+
+	magplot(fit_VST$pivot_wave, fit_VST$EBL_prediction, col = 'black', log = 'xy',xlab="Wavelength [microns]",
+        ylab = expression("Intensity [nWm"^{-2} ~ "sr"^{-1} ~ "]"), cex = 1.5, lwd = 1.5,
+        side = c(1,2,3,4))
 
 
                            
