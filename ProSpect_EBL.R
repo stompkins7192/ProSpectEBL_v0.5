@@ -146,7 +146,7 @@ ProSpectEBL = function(tau_birth = 1,
     
     
     
-    ch = cosdistTravelTime(zvec, ref = ref)
+  ch = cosdistTravelTime(zvec, ref = ref)
   agevec = cosdistTravelTime(zvec, ref=ref) * 1e9 # Create age vector
   age = agevec
   #if for some reason zvec (redshift vector) and age vector (agevec) are not the same length, stop.
