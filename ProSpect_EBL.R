@@ -72,15 +72,7 @@ ps2EBL = function(f, volweights, waveout){
 
 
 
-ProSpectEBL = function(CSFH_parms = c(0.088,1.581,1.015,-0.299),
-                       CSFH_vec = NULL,
-                       AGN_parms = NULL,
-                       AGN_vec = NULL,
-                       type="redshift",
-                       Zstart=1e-4,
-                       Zfinal=0.02,
-                       flts = NULL,
-                       tau_birth = 1, 
+ProSpectEBL = function(tau_birth = 1, 
                        tau_screen = 0.3, 
                        tau_AGN = 1,
                        pow_birth = -0.7,
@@ -125,8 +117,17 @@ ProSpectEBL = function(CSFH_parms = c(0.088,1.581,1.015,-0.299),
                        LFWHM = 470, 
                        IGMabsorb = 0, 
                        waveout = seq(0,15,by = 0.01), 
+                       #args unique to ProSpectEBL begin here.
                        agevec = seq(1e-5,13.5,0.06), 
-                       zvec = NULL)
+                       zvec = NULL,
+                       CSFH_parms = c(0.088,1.581,1.015,-0.299),
+                       CSFH_vec = NULL,
+                       AGN_parms = NULL,
+                       AGN_vec = NULL,
+                       type="redshift",
+                       Zstart=1e-4,
+                       Zfinal=0.02,
+                       flts = NULL)
 {
   
   
