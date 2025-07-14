@@ -87,8 +87,8 @@ ProSpectEBL = function(tau_birth = 1,
                        AGN = Fritz, 
                        Dale_M2L_func = NULL,
                        returnall = TRUE, 
-                       H0 = 67.8, 
-                       OmegaM = 0.308,
+                       H0 = 70, 
+                       OmegaM = 0.3,
                        OmegaL = 1 - OmegaM,
                        ref = '737', 
                        unimax = 1.38e+10, 
@@ -267,7 +267,7 @@ ProSpectEBL = function(tau_birth = 1,
                        AGNal = AGNal, AGNta = AGNta, AGNct = AGNct, AGNbe = AGNbe, AGNrm = AGNrm, 
                        AGNp = AGNp, AGNq = AGNq, Eb = Eb, L0 = L0, LFWHM = LFWHM, IGMabsorb = IGMabsorb,  
                        pow_birth = pow_birth, pow_screen = pow_screen, pow_AGN = pow_AGN,
-                       Dale_M2L_func = Dale_M2L_func, unimax = unimax)$Photom
+                       Dale_M2L_func = Dale_M2L_func, unimax = unimax, ref = ref)$Photom
       
       
     }
@@ -320,7 +320,7 @@ ProSpectEBL = function(tau_birth = 1,
                        AGNal = AGNal, AGNta = AGNta, AGNct = AGNct, AGNbe = AGNbe, AGNrm = AGNrm, 
                        AGNp = AGNp, AGNq = AGNq, Eb = Eb, L0 = L0, LFWHM = LFWHM, IGMabsorb = IGMabsorb,  
                        pow_birth = pow_birth, pow_screen = pow_screen, pow_AGN = pow_AGN,
-                       Dale_M2L_func = Dale_M2L_func, unimax = unimax)
+                       Dale_M2L_func = Dale_M2L_func, unimax = unimax, ref =ref)
       
       
       a = Lum2Flux(wave = temp$FinalLum$wave, lum = temp$FinalLum$lum, z = zvec[i], ref= ref)
